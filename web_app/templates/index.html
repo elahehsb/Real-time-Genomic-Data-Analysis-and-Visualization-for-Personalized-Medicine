@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genomic Disease Prediction</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <h1>Genomic Disease Prediction</h1>
+    <form id="prediction-form">
+        <label for="sequence">Genomic Sequence:</label>
+        <textarea id="sequence" rows="4" cols="50"></textarea>
+        <br>
+        <button type="button" onclick="predictDisease()">Predict Disease Risk</button>
+    </form>
+    <h2>Predicted Disease Risk: <span id="predicted-disease-risk"></span></h2>
+
+    <script>
+        function predictDisease() {
+            const sequence = document.getElementById('sequence').value;
+            
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ sequence: sequence }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('predicted-disease-risk').innerText = data.disease_risk;
+            });
+        }
+    </script>
+</body>
+</html>
